@@ -1,0 +1,59 @@
+{
+  "name": "slip77",
+  "version": "0.1.0",
+  "description": "A SLIP-77 compatible library",
+  "keywords": [
+    "slip77",
+    "liquidjs",
+    "liquid",
+    "elements"
+  ],
+  "main": "./src/index.js",
+  "types": "./types/index.d.ts",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -p ./tsconfig.json && npm run formatjs",
+    "clean": "rimraf src types",
+    "coverage": "nyc --check-coverage --exclude='tests/**/*.js' --reporter=lcov --reporter=text --branches 90 --functions 90 --lines 90 npm run unit",
+    "flb": "npm run format && npm run lint && npm run build",
+    "format": "npm run prettier -- --write",
+    "formatjs": "npm run prettierjs -- --write > /dev/null 2>&1",
+    "format:ci": "npm run prettier -- --check && npm run prettierjs -- --check",
+    "gitdiff:ci": "npm run build && git diff --exit-code",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "prettier": "prettier 'ts_src/*.ts' --ignore-path ./.prettierignore",
+    "prettierjs": "prettier 'src/*.js' --ignore-path ./.prettierignore",
+    "test": "npm run format:ci && npm run lint && npm run build && npm run unit",
+    "unit": "tape tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vulpemventures/slip77.git"
+  },
+  "dependencies": {
+    "@types/node": "^13.9.1",
+    "create-hmac": "^1.1.7",
+    "typeforce": "^1.18.0"
+  },
+  "devDependencies": {
+    "@types/tape": "4.2.33",
+    "bip39": "^3.0.2",
+    "nyc": "^14.1.1",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
+    "tape": "^4.10.2",
+    "tslint": "5.17.0",
+    "typescript": "3.5.2"
+  },
+  "author": "Vulpem Ventures",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vulpemventures/slip77/issues"
+  },
+  "homepage": "https://github.com/vulpemventures/slip77#readme"
+}
