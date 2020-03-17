@@ -13,27 +13,22 @@ class Slip77 {
     const seed = Buffer.alloc(32, 0);
     const node = new Slip77(seed);
     const masterKey = Buffer.concat([seed, key]);
-    node._data = masterKey;
     node._masterKey = masterKey;
     return node;
   }
   constructor(_seed) {
     typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
     const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
-    this._data = crypto_1.hmacSHA512(DOMAIN, [seed]);
+    const root = crypto_1.hmacSHA512(DOMAIN, [seed]);
+    this._masterKey = crypto_1.hmacSHA512(root.slice(0, 32), [PREFIX, LABEL]);
   }
   masterBlindingKey() {
-    if (this._masterKey !== undefined) return this._masterKey.slice(32);
-    if (this._data === undefined) throw new Error('Seed not set');
-    this._masterKey = crypto_1.hmacSHA512(this._data.slice(0, 32), [
-      PREFIX,
-      LABEL,
-    ]);
+    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     return this._masterKey.slice(32);
   }
   deriveBlindingKey(_script) {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
-    if (this._masterKey === undefined) throw new Error('Master key not set');
+    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');

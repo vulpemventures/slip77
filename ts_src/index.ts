@@ -6,7 +6,13 @@ const DOMAIN = Buffer.from('Symmetric key seed');
 const LABEL = Buffer.from('SLIP-0077');
 const PREFIX = Buffer.alloc(1, 0);
 
-export class Slip77 {
+export interface Slip77Interface {
+  _masterKey: Buffer;
+  masterBlindingKey(): Buffer;
+  deriveBlindingKey(script: Buffer | string): Buffer;
+}
+
+export class Slip77 implements Slip77Interface {
   static fromMasterBlindingKey(_key: Buffer | string): Slip77 {
     typeforce(typeforce.anyOf('Buffer', 'String'), _key);
     const key = Buffer.isBuffer(_key) ? _key : Buffer.from(_key, 'hex');
@@ -14,30 +20,27 @@ export class Slip77 {
     const seed = Buffer.alloc(32, 0);
     const node = new Slip77(seed);
     const masterKey = Buffer.concat([seed, key]);
-    node._data = masterKey;
     node._masterKey = masterKey;
     return node;
   }
 
-  _data: Buffer;
-  _masterKey: Buffer | undefined;
+  _masterKey: Buffer;
 
   constructor(_seed: Buffer | string) {
     typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
     const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
-    this._data = hmacSHA512(DOMAIN, [seed]);
+    const root = hmacSHA512(DOMAIN, [seed]);
+    this._masterKey = hmacSHA512(root.slice(0, 32), [PREFIX, LABEL]);
   }
 
   masterBlindingKey(): Buffer {
-    if (this._masterKey !== undefined) return this._masterKey.slice(32);
-    if (this._data === undefined) throw new Error('Seed not set');
-    this._masterKey = hmacSHA512(this._data.slice(0, 32), [PREFIX, LABEL]);
+    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     return this._masterKey.slice(32);
   }
 
   deriveBlindingKey(_script: Buffer | string): Buffer {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
-    if (this._masterKey === undefined) throw new Error('Master key not set');
+    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');

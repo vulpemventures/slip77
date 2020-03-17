@@ -1,8 +1,12 @@
 /// <reference types="node" />
-export declare class Slip77 {
+export interface Slip77Interface {
+    _masterKey: Buffer;
+    masterBlindingKey(): Buffer;
+    deriveBlindingKey(script: Buffer | string): Buffer;
+}
+export declare class Slip77 implements Slip77Interface {
     static fromMasterBlindingKey(_key: Buffer | string): Slip77;
-    _data: Buffer;
-    _masterKey: Buffer | undefined;
+    _masterKey: Buffer;
     constructor(_seed: Buffer | string);
     masterBlindingKey(): Buffer;
     deriveBlindingKey(_script: Buffer | string): Buffer;
