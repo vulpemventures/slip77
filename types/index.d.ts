@@ -1,8 +1,8 @@
 /// <reference types="node" />
 export declare class Slip77 {
-    private _seed;
-    private _masterBlindingKey;
-    constructor(seed: Buffer | string);
+    private _data;
+    private _masterKey;
+    constructor(_seed: Buffer | string);
     masterBlindingKey(): Buffer;
-    deriveBlindingKey(script: Buffer): Buffer;
+    deriveBlindingKey(_script: Buffer | string): Buffer;
 }
