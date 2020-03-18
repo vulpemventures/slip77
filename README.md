@@ -13,5 +13,3 @@ A [SLIP-77](https://github.com/satoshilabs/slips/blob/master/slip-0077.md) compa
 - [Derive a blinding key pair](./tests/index.js#L39)
 
 ## LICENSE [MIT](LICENSE)
-
-A derivation (and extraction for modularity) of the `HDWallet`/`HDNode` written and tested by [liquidjs-lib](https://github.com/vulpemventures/liquidjs-lib) contributors since 2020.
