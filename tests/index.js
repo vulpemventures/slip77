@@ -20,8 +20,10 @@ const fixtures = initBuffers(preFixtures);
 fixtures.valid.masterBlindingKey.forEach(f => {
   test('masterBlindingKey from mnemonic', t => {
     const seed = bip39.mnemonicToSeedSync(f.mnemonic);
-    const slip77Node = new Slip77(seed);
-    t.same(slip77Node.masterBlindingKey().toString('hex'), f.expected);
+    const node1 = new Slip77(seed);
+    const node2 = new Slip77(seed.toString('hex'));
+    t.same(node1.masterBlindingKey().toString('hex'), f.expected);
+    t.same(node2.masterBlindingKey().toString('hex'), f.expected);
     t.end();
   });
 });
@@ -29,15 +31,26 @@ fixtures.valid.masterBlindingKey.forEach(f => {
 fixtures.valid.deriveBlindingKey.forEach(f => {
   test('deriveBlindingKey from master', t => {
     const slip77Node = Slip77.fromMasterBlindingKey(f.masterKey);
-    t.same(slip77Node.masterBlindingKey(), f.masterKey);
+    t.same(slip77Node.masterBlindingKey().toString('hex'), f.masterKey);
     t.same(
       slip77Node.deriveBlindingPrivKey(f.script).toString('hex'),
       f.expectedPrivKey,
     );
     t.same(
-      slip77Node.deriveBlindingPubKey(f.script).toString('hex'),
+      slip77Node
+        .deriveBlindingPubKey(Buffer.from(f.script, 'hex'))
+        .toString('hex'),
       f.expectedPubKey,
     );
+    t.end();
+  });
+});
+
+fixtures.invalid.constructor.forEach(f => {
+  test('constructor throws', t => {
+    t.throws(() => {
+      new Slip77(f.seed);
+    }, new RegExp(f.exception));
     t.end();
   });
 });

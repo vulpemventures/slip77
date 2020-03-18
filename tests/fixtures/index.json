@@ -8,18 +8,28 @@
     ],
     "deriveBlindingKey": [
       {
-        "masterKey": "Buffer.from('6c2de18eabeff3f7822bc724ad482bef0557f3e1c1e1c75b7a393a5ced4de616', 'hex')",
-        "script": "Buffer.from('76a914a579388225827d9f2fe9014add644487808c695d88ac', 'hex')",
+        "masterKey": "6c2de18eabeff3f7822bc724ad482bef0557f3e1c1e1c75b7a393a5ced4de616",
+        "script": "76a914a579388225827d9f2fe9014add644487808c695d88ac",
         "expectedPrivKey": "4e6e94df28448c7bb159271fe546da464ea863b3887d2eec6afd841184b70592",
         "expectedPubKey": "0223ef5cf5d1185f86204b9386c8541061a24b6f72fa4a29e3a0b60e1c20ffaf5b"
       }
     ]
   },
   "invalid": {
+    "constructor": [
+      {
+        "seed": 0,
+        "expected": "Expected Buffer|String"
+      }
+    ],
     "fromMasterBlindingKey": [
       {
         "masterKey": "Buffer.from('00000000000000000000000000000000000000000000000000000000000000', 'hex')",
         "exception": "Invalid key length"
+      },
+      {
+        "masterKey": 0,
+        "exception": "Expected Buffer|String"
       }
     ]
   }
