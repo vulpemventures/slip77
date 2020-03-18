@@ -58,7 +58,7 @@ export function fromMasterBlindingKey(key: Buffer | string): Slip77Interface {
   return new Slip77(masterKey, undefined, undefined, undefined, undefined);
 }
 
-export function fromBip39Seed(_seed: Buffer | string): Slip77Interface {
+export function fromSeed(_seed: Buffer | string): Slip77Interface {
   typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
   const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
   const root = hmacSHA512(DOMAIN, [seed]);

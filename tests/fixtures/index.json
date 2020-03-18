@@ -1,6 +1,6 @@
 {
   "valid": {
-    "fromBip39Seed": [
+    "fromSeed": [
       {
         "mnemonic": "all all all all all all all all all all all all",
         "expected": "6c2de18eabeff3f7822bc724ad482bef0557f3e1c1e1c75b7a393a5ced4de616"
@@ -21,7 +21,7 @@
     ]
   },
   "invalid": {
-    "fromBip39Seed": [
+    "fromSeed": [
       {
         "seed": 0,
         "expected": "Expected Buffer|String"

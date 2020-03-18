@@ -22,4 +22,4 @@ export declare class Slip77 implements Slip77Interface {
     derive(script: Buffer | string): Slip77Interface;
 }
 export declare function fromMasterBlindingKey(key: Buffer | string): Slip77Interface;
-export declare function fromBip39Seed(_seed: Buffer | string): Slip77Interface;
+export declare function fromSeed(_seed: Buffer | string): Slip77Interface;

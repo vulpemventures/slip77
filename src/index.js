@@ -41,7 +41,7 @@ function fromMasterBlindingKey(key) {
   return new Slip77(masterKey, undefined, undefined, undefined, undefined);
 }
 exports.fromMasterBlindingKey = fromMasterBlindingKey;
-function fromBip39Seed(_seed) {
+function fromSeed(_seed) {
   typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
   const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
   const root = crypto_1.hmacSHA512(DOMAIN, [seed]);
@@ -54,7 +54,7 @@ function fromBip39Seed(_seed) {
     undefined,
   );
 }
-exports.fromBip39Seed = fromBip39Seed;
+exports.fromSeed = fromSeed;
 function deriveLocal(masterKey, extra, script) {
   typeforce(
     {

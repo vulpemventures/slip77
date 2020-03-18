@@ -17,11 +17,11 @@ const initBuffers = object =>
 
 const fixtures = initBuffers(preFixtures);
 
-fixtures.valid.fromBip39Seed.forEach(f => {
-  test('fromBip39Seed', t => {
+fixtures.valid.fromSeed.forEach(f => {
+  test('fromSeed', t => {
     const seed = bip39.mnemonicToSeedSync(f.mnemonic);
-    const node1 = slip77.fromBip39Seed(seed);
-    const node2 = slip77.fromBip39Seed(seed.toString('hex'));
+    const node1 = slip77.fromSeed(seed);
+    const node2 = slip77.fromSeed(seed.toString('hex'));
     t.same(node1.masterKey.toString('hex'), f.expected);
     t.same(node2.masterKey.toString('hex'), f.expected);
     t.end();
@@ -46,10 +46,10 @@ fixtures.valid.derive.forEach(f => {
   });
 });
 
-fixtures.invalid.fromBip39Seed.forEach(f => {
-  test('fromBip39Seed throws', t => {
+fixtures.invalid.fromSeed.forEach(f => {
+  test('fromSeed throws', t => {
     t.throws(() => {
-      slip77.fromBip39Seed(f.seed);
+      slip77.fromSeed(f.seed);
     }, new RegExp(f.exception));
     t.end();
   });
