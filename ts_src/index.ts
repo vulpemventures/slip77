@@ -1,3 +1,4 @@
+const ecc = require('tiny-secp256k1');
 const typeforce = require('typeforce');
 
 import { hmacSHA256, hmacSHA512 } from './crypto';
@@ -9,7 +10,8 @@ const PREFIX = Buffer.alloc(1, 0);
 export interface Slip77Interface {
   _masterKey: Buffer;
   masterBlindingKey(): Buffer;
-  deriveBlindingKey(script: Buffer | string): Buffer;
+  deriveBlindingPrivKey(script: Buffer | string): Buffer;
+  deriveBlindingPubKey(script: Buffer | string): Buffer;
 }
 
 export class Slip77 implements Slip77Interface {
@@ -38,12 +40,17 @@ export class Slip77 implements Slip77Interface {
     return this._masterKey.slice(32);
   }
 
-  deriveBlindingKey(_script: Buffer | string): Buffer {
+  deriveBlindingPrivKey(_script: Buffer | string): Buffer {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
     if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');
     return hmacSHA256(this._masterKey.slice(32), [script]);
+  }
+
+  deriveBlindingPubKey(_script: Buffer | string): Buffer {
+    const privkey = this.deriveBlindingPrivKey(_script);
+    return ecc.pointFromScalar(privkey);
   }
 }

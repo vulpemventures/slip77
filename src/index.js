@@ -1,5 +1,6 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
+const ecc = require('tiny-secp256k1');
 const typeforce = require('typeforce');
 const crypto_1 = require('./crypto');
 const DOMAIN = Buffer.from('Symmetric key seed');
@@ -26,13 +27,17 @@ class Slip77 {
     if (this._masterKey.length <= 0) throw new Error('Master key not set');
     return this._masterKey.slice(32);
   }
-  deriveBlindingKey(_script) {
+  deriveBlindingPrivKey(_script) {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
     if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');
     return crypto_1.hmacSHA256(this._masterKey.slice(32), [script]);
+  }
+  deriveBlindingPubKey(_script) {
+    const privkey = this.deriveBlindingPrivKey(_script);
+    return ecc.pointFromScalar(privkey);
   }
 }
 exports.Slip77 = Slip77;

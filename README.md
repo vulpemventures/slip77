@@ -9,7 +9,7 @@ A [SLIP-77](https://github.com/satoshilabs/slips/blob/master/slip-0077.md) compa
 ## Example
 
 - [Generate a master blinding key from BIP39 seed](./tests/index.js#L20)
-- [Derive a child blinding key from master](./tests/index.js#L29)
+- [Derive a blinding key pair from master](./tests/index.js#L29)
 
 ## LICENSE [MIT](LICENSE)
 

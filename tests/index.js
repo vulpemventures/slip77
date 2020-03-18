@@ -30,7 +30,14 @@ fixtures.valid.deriveBlindingKey.forEach(f => {
   test('deriveBlindingKey from master', t => {
     const slip77Node = Slip77.fromMasterBlindingKey(f.masterKey);
     t.same(slip77Node.masterBlindingKey(), f.masterKey);
-    t.same(slip77Node.deriveBlindingKey(f.script).toString('hex'), f.expected);
+    t.same(
+      slip77Node.deriveBlindingPrivKey(f.script).toString('hex'),
+      f.expectedPrivKey,
+    );
+    t.same(
+      slip77Node.deriveBlindingPubKey(f.script).toString('hex'),
+      f.expectedPubKey,
+    );
     t.end();
   });
 });
