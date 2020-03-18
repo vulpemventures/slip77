@@ -36,13 +36,11 @@ export class Slip77 implements Slip77Interface {
   }
 
   masterBlindingKey(): Buffer {
-    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     return this._masterKey.slice(32);
   }
 
   deriveBlindingPrivKey(_script: Buffer | string): Buffer {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
-    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');

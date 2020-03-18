@@ -24,12 +24,10 @@ class Slip77 {
     this._masterKey = crypto_1.hmacSHA512(root.slice(0, 32), [PREFIX, LABEL]);
   }
   masterBlindingKey() {
-    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     return this._masterKey.slice(32);
   }
   deriveBlindingPrivKey(_script) {
     typeforce(typeforce.anyOf('Buffer', 'String'), _script);
-    if (this._masterKey.length <= 0) throw new Error('Master key not set');
     const script = Buffer.isBuffer(_script)
       ? _script
       : Buffer.from(_script, 'hex');
