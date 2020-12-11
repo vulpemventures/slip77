@@ -42,7 +42,6 @@ function fromMasterBlindingKey(key) {
 }
 exports.fromMasterBlindingKey = fromMasterBlindingKey;
 function fromSeed(_seed) {
-  typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
   const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
   const root = crypto_1.hmacSHA512(DOMAIN, [seed]);
   const masterKey = crypto_1.hmacSHA512(root.slice(0, 32), [PREFIX, LABEL]);
@@ -56,13 +55,6 @@ function fromSeed(_seed) {
 }
 exports.fromSeed = fromSeed;
 function deriveLocal(masterKey, extra, script) {
-  typeforce(
-    {
-      masterKey: typeforce.BufferN(32),
-      script: typeforce.anyOf('Buffer', 'String'),
-    },
-    { masterKey, script },
-  );
   const _script = Buffer.isBuffer(script) ? script : Buffer.from(script, 'hex');
   const derivedPrivKey = crypto_1.hmacSHA256(masterKey, [_script]);
   const derivedPubKey = ecc.pointFromScalar(derivedPrivKey);

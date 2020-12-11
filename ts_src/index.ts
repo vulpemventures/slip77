@@ -59,7 +59,6 @@ export function fromMasterBlindingKey(key: Buffer | string): Slip77Interface {
 }
 
 export function fromSeed(_seed: Buffer | string): Slip77Interface {
-  typeforce(typeforce.anyOf('Buffer', 'String'), _seed);
   const seed = Buffer.isBuffer(_seed) ? _seed : Buffer.from(_seed, 'hex');
   const root = hmacSHA512(DOMAIN, [seed]);
   const masterKey = hmacSHA512(root.slice(0, 32), [PREFIX, LABEL]);
@@ -77,13 +76,6 @@ function deriveLocal(
   extra: Buffer | undefined,
   script: Buffer | string,
 ): Slip77Interface {
-  typeforce(
-    {
-      masterKey: typeforce.BufferN(32),
-      script: typeforce.anyOf('Buffer', 'String'),
-    },
-    { masterKey, script },
-  );
   const _script = Buffer.isBuffer(script) ? script : Buffer.from(script, 'hex');
   const derivedPrivKey = hmacSHA256(masterKey, [_script]);
   const derivedPubKey = ecc.pointFromScalar(derivedPrivKey);
