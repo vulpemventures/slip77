@@ -11,7 +11,8 @@
   "main": "./src/index.js",
   "types": "./types/index.d.ts",
   "files": [
-    "src"
+    "src",
+    "types"
   ],
   "engines": {
     "node": ">=8.0.0"
