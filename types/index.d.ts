@@ -1,4 +1,8 @@
 /// <reference types="node" />
+export interface SLIP77API {
+    fromSeed(seed: Buffer | string): Slip77Interface;
+    fromMasterBlindingKey(masterBlindingKey: Buffer | string): Slip77Interface;
+}
 export interface Slip77Interface {
     masterKey: Buffer;
     extra?: Buffer;
@@ -7,19 +11,7 @@ export interface Slip77Interface {
     publicKey?: Buffer;
     derive(script: Buffer | string): Slip77Interface;
 }
-export declare class Slip77 implements Slip77Interface {
-    private _masterKey;
-    private _extra;
-    private _script;
-    private _privateKey;
-    private _publicKey;
-    constructor(_masterKey: Buffer, _extra: Buffer | undefined, _script: Buffer | undefined, _privateKey: Buffer | undefined, _publicKey: Buffer | undefined);
-    readonly masterKey: Buffer;
-    readonly extra: Buffer | undefined;
-    readonly script: Buffer | undefined;
-    readonly privateKey: Buffer | undefined;
-    readonly publicKey: Buffer | undefined;
-    derive(script: Buffer | string): Slip77Interface;
+export interface TinySecp256k1Interface {
+    pointFromScalar(d: Uint8Array, compressed?: boolean): Uint8Array | null;
 }
-export declare function fromMasterBlindingKey(key: Buffer | string): Slip77Interface;
-export declare function fromSeed(_seed: Buffer | string): Slip77Interface;
+export declare function SLIP77Factory(ecc: TinySecp256k1Interface): SLIP77API;
