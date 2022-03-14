@@ -1,7 +1,8 @@
 const bip39 = require('bip39');
 const test = require('tape');
 const preFixtures = require('./fixtures');
-const slip77 = require('../src/');
+const { SLIP77Factory } = require('../src/');
+const ecc = require('tiny-secp256k1');
 
 const initBuffers = object =>
   JSON.parse(JSON.stringify(object), (_, value) => {
@@ -16,6 +17,8 @@ const initBuffers = object =>
   });
 
 const fixtures = initBuffers(preFixtures);
+
+const slip77 = SLIP77Factory(ecc)
 
 fixtures.valid.fromSeed.forEach(f => {
   test('fromSeed', t => {
